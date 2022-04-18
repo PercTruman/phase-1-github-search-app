@@ -11,12 +11,21 @@ document.addEventListener('DOMContentLoaded', ()=>
 
 
 function renderResults(users){
-    console.log(users)
     let result = users.items[0].login
     let avatar = users.items[0].avatar_url
 
-    let p = document.createElement('p')
-        p.innerText = result
+    let usernameLink  = document.createElement('a')
+    let clickableName =document.createTextNode(result)
+        usernameLink.appendChild(clickableName)
+
+       usernameLink.addEventListener('click', ()=>{
+            fetch(`https://api.github.com/users/${result}/repos`)
+                .then(res=>res.json())
+                .then(userRepos=>renderUserRepos(userRepos))
+        })
+        // usernameLink.href = users.items[0].repos_url
+    
+        // usernameLink.addEventListener('click', (e)=>console.log(e))
 
     let avatarImage = document.createElement('img')
         avatarImage.src = avatar
@@ -25,10 +34,19 @@ function renderResults(users){
     let link = document.createTextNode("Link to Profile")
         userUrl.appendChild(link)
         userUrl.href = users.items[0].url
-        console.log(userUrl)
+
     
-        document.getElementById('github-container').append(p, avatarImage, userUrl)
+        document.getElementById('github-container').append(usernameLink, avatarImage, userUrl)
     }
+
+function renderUserRepos(repos){
+    repos.forEach(repo => {
+        let repoList = document.getElementById('repos-list')
+        let repoItem = document.createElement('p')
+            repoItem.innerText=repo.name
+            repoList.appendChild(repoItem)
+})
+}
 
 
 
