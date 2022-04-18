@@ -23,26 +23,22 @@ function renderResults(users){
                 .then(res=>res.json())
                 .then(userRepos=>renderUserRepos(userRepos))
         })
-        // usernameLink.href = users.items[0].repos_url
     
-        // usernameLink.addEventListener('click', (e)=>console.log(e))
-
     let avatarImage = document.createElement('img')
         avatarImage.src = avatar
 
     let userUrl = document.createElement('a')
     let link = document.createTextNode("Link to Profile")
         userUrl.appendChild(link)
-        userUrl.href = users.items[0].url
+        userUrl.href = `https://github.com/${result}`
 
-    
         document.getElementById('github-container').append(usernameLink, avatarImage, userUrl)
     }
 
 function renderUserRepos(repos){
     repos.forEach(repo => {
         let repoList = document.getElementById('repos-list')
-        let repoItem = document.createElement('p')
+        let repoItem = document.createElement('li')
             repoItem.innerText=repo.name
             repoList.appendChild(repoItem)
 })
